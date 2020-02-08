@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+    <!-- Head -->
+    <head th:fragment="head(title)">
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <title th:text="${title}">SOMEHOME</title>
+    </head>
+
+    <body>
+
+        <!-- Page information -->
+        <div th:fragment="page_information(text)" class="jumbotron text-center" style="margin-bottom:0">
+            <h1 th:text="${text}">Page information here...</h1>
+        </div>
+
+        <!-- Navigation -->
+        <div th:fragment="navigation">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container">
+                    <a class="navbar-brand" href="#">SOMEHOME</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarResponsive" sec:authorize="hasAuthority('USER')">
+
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/home}">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/picture_album}">Picture Album</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/friends}">Friends</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/friend_requests}">Friend Requests</a>
+                            </li>
+                        </ul>
+
+                        <form id="user_search_form" th:action="@{/accounts}" class="form-inline my-2 my-md-0" role="search" method="GET">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search user..." id="usersearchfield" name="usersearchfield">
+                            </div>
+                            <div class="input-group-append">
+                                <button class="btn btn-secondary" id="usersearchbutton" type="submit">Search</button>
+                            </div>
+                        </form>
+
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown07" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
+                            <div class="dropdown-menu" aria-labelledby="dropdown07">
+                                <a class="dropdown-item" th:href="@{/settings}">Settings</a>
+                                <form method="POST" th:action="@{/logout}" id="logoutform">
+                                    <button class="dropdown-item" id="logoutbutton" type="submit">Log out</button>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </nav>         
+        </div>
+
+        <!-- Profilepicture -->
+        <div th:fragment="profilepicture(picture)" class="container">
+            <div th:if="${picture != null}" style="overflow: hidden">
+                <img alt="Profile Picture" style="max-width: 300px; max-height: 300px; height: auto; width: auto; display: block;" th:src="@{/pictures/} + ${picture.id}" data-holder-rendered="true">
+            </div>
+        </div>
+
+        <!-- Profile description -->
+        <div th:fragment="profile_description(description)" class="container">
+            <p th:if="${description} != null" th:text="${description}" class="font-italic"></p>
+        </div>
+
+        <!-- Album picture -->
+        <div th:fragment="album_picture(picture)" class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <img class="card-img-top" th:src="@{/pictures/} + ${picture.id}" height="225" />
+                <div class="card-body">
+                    <p class="card-text" th:text="${picture.description}"></p>
+                    <a class="btn btn-sm btn-outline-secondary" th:href="@{/pictures/} + ${picture.id} + '/view'">View</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- footer -->
+        <div th:fragment="page_footer">
+            <br/>
+            <br/>
+            <br/>
+            <div  class="jumbotron text-center" style="margin-bottom:0">
+                <footer>
+                    <p>SOMEHOME is a project work which was made as part of the University of Helsinki's Java web programming course in spring 2019</p>
+                </footer>
+            </div>
+        </div>
+
+        <!-- Wall message form -->
+        <div th:fragment="wall_message_form(account)" class="row">
+            <div class="col-lg-12 text-center">
+                <h3>Write message to wall</h3>
+            </div>
+            <div class="col-2"></div>
+            <div class="col-lg-8 text-center">
+                <form id="message_add_form" th:action="@{/messages}" method="POST">
+                    <input type="hidden" id="receiverId" name="receiverId" th:value="${account.id}"/>
+                    <div class="form-group">
+                        <textarea maxlength="200" class="form-control" rows="2" name="message" id="message_input"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form> 
+            </div>
+            <div class="col-2"></div>
+        </div>
+
+        <!-- Wall message element -->
+        <div th:fragment="message_element(message, friend_status)">
+            <h5 class="font-weight-bold" th:text="'Message from: ' + ${message.sender.profilename}"></h5>
+            <h5 class="font-weight-bold" th:text="'Timestamp: ' + ${#temporals.format(message.time, 'yyyy-MM-dd HH:mm')}"></h5>
+            <!-- Like counter -->
+            <h5 class="font-weight-bold" th:text="'Likes: ' + ${message.likeCounter}"></h5>
+            <!-- Message content -->
+            <h5 th:text="${message.content}"></h5>
+            <!-- like and comment section for friends -->
+            <div th:if="${friend_status} == 2" class="btn-group mt-2">
+                <!-- form for likes -->
+                <div class="row">
+                    <div class="col-2 text-center">
+                        <form method="POST" th:action="@{/messages/} + ${message.id} + '/like'" th:id="'message_like_form' + ${message.id}">
+                            <button class="btn btn-secondary" th:id="'like_button' + ${message.id}" type="submit">Like</button>
+                        </form>
+                    </div>
+                    <div class="col-10">
+                        <!-- Comment form -->
+                        <form class="form-inline" th:id="'message_comment_form' + ${message.id}" th:action="@{/messages/} + ${message.id} + '/comment'" method="POST">
+                            <div class="input-group">
+                                <input maxlength="200" placeholder="Write a comment..." class="form-control" name="comment" id="comment_input"/>
+                                <div class="input-group-append">
+                                    <button type="submit" class="input-group-text">Comment</button>
+                                </div>
+                            </div>
+                        </form>  
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div th:if="${message.comments} != null" class="row bg-light mt-2">
+                <th:block th:each="comment : ${message.comments}">
+                    <div class="col-12">
+                        <span class="font-weight-bold" th:text="'Comment from: ' + ${comment.account.profilename}"></span>
+                        <br/>
+                        <span class="font-weight-bold" th:text="'Timestamp: ' + ${#temporals.format(comment.time, 'yyyy-MM-dd HH:mm')}"></span>
+                        <p th:text="${comment.content}"></p>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+
+    </body>
+</html>

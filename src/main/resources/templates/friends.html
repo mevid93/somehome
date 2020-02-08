@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/layout :: head(title='Friends')">
+        <meta charset="UTF-8" />
+        <title>SOMEHOME</title>
+    </head>
+    <body>
+
+        <!-- Page information -->
+        <div th:replace="fragments/layout :: page_information(text='Friends')"></div>
+
+        <!-- Navigation -->
+        <nav th:replace="fragments/layout :: navigation"></nav>
+
+        <!-- Page Content -->
+        <div class="container">
+
+            <!-- table containing sent friends -->
+            <div class="row">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Profilename</th>
+                                <th>Delete from Friends</th>
+                            </tr>
+                        </thead>
+                        <th:block th:each="friend : ${friends}">
+                            <tr>
+                                <td><a th:href="@{'/accounts/' + ${friend.profilename}}" th:text="${friend.profilename}"></a></td>
+                                <td>
+                                    <form th:id="'friend_delete_form' + ${friend.id}" th:action="@{/friends/} + ${friend.id} + '/delete'" method="POST">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </th:block>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- footer -->
+        <div th:replace="fragments/layout :: page_footer"></div>
+
+    </body>
+</html>

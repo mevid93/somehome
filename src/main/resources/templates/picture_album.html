@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/layout :: head(title='Picture Album')">
+        <meta charset="UTF-8" />
+        <title>SOMEHOME</title>
+    </head>
+    <body>
+
+        <!-- Page information -->
+        <div th:replace="fragments/layout :: page_information(text=${account.profilename})"></div>
+
+        <!-- Navigation -->
+        <nav th:replace="fragments/layout :: navigation"></nav>
+
+        <!-- Page Content -->
+        <div class="container" style="margin-top:30px">
+
+            <main role="main">
+
+                <section class="jumbotron text-center">
+                    <div class="container">
+                        <h1 class="jumbotron-heading">Picture Album</h1>
+                        <p class="lead text-muted">Because each picture is worth thousand words</p>
+                        <p th:if="${users_album} == true">
+                            <a th:href="@{/pictures}" class="btn btn-primary my-2">Manage Pictures</a>
+                        </p>
+                    </div>
+                </section>
+
+                <div class="album py-5 bg-light">
+                    <div class="container">
+                        <div class="row">
+                            
+                            <!-- All pictures that user have -->
+                            <th:block th:each="picture : ${picture_album.pictures}">
+                                <div th:replace="fragments/layout :: album_picture(picture=${picture})"></div>
+                            </th:block>
+                            
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+
+        <!-- footer -->
+        <div th:replace="fragments/layout :: page_footer"></div>
+
+    </body>
+</html>

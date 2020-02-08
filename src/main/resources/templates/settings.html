@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/layout :: head(title='Settings')">
+        <meta charset="UTF-8" />
+        <title>SOMEHOME</title>
+    </head>
+    <body>
+
+        <!-- Page information -->
+        <div th:replace="fragments/layout :: page_information(text=${account.profilename})"></div>
+
+        <!-- Navigation -->
+        <nav th:replace="fragments/layout :: navigation"></nav>
+
+        <!-- Page Content -->
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h1 class="mt-5">Profile Preferences</h1>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3"></div>
+                <div class="col-lg-6 text-center">
+                    <form id="profile_settings_form" th:action="@{/settings}" method="POST">
+                        <!-- error message -->
+                        <div th:if="${errorMessage}">
+                            <p th:text="${errorMessage}" class="alert alert-danger"></p>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">About me (short description)</label>
+                            <textarea maxlength="200" class="form-control" rows="5" name="description" id="description" th:text="${account.description}"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="profilepicture">Select Profile Picture</label>
+                            <select class="form-control" id="profilePictureId" name="profilePictureId">
+                                <option value="-1">Default</option>
+                                <th:block th:each="picture : ${pictures}">
+                                    <option th:value="${picture.id}" th:text="${picture.name}"></option>
+                                </th:block>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Preferences</button>
+                    </form>  
+                </div>
+                <div class="col-3"></div>
+            </div>
+        </div>
+
+        <!-- footer -->
+        <div th:replace="fragments/layout :: page_footer"></div>
+
+    </body>
+</html>

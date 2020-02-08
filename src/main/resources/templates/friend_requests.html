@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/layout :: head(title='Friend Requests')">
+        <meta charset="UTF-8" />
+        <title>SOMEHOME</title>
+    </head>
+    <body>
+
+        <!-- Page information -->
+        <div th:replace="fragments/layout :: page_information(text='Friend Requests')"></div>
+
+        <!-- Navigation -->
+        <nav th:replace="fragments/layout :: navigation"></nav>
+
+        <!-- Page Content -->
+        <div class="container">
+
+            <!-- table containing sent friend requests -->
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="mt-5">Sent Friend Requests</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Receiver</th>
+                                <th>Sending Time</th>
+                                <th>Cancel Request</th>
+                            </tr>
+                        </thead>
+                        <th:block th:each="request : ${sent_requests}">
+                            <tr>
+                                <td><a th:href="@{'/accounts/' + ${request.receiver.profilename}}" th:text="${request.receiver.profilename}"></a></td>
+                                <td><span th:text="${#temporals.format(request.created, 'yyyy-MM-dd HH:mm')}"></span></td>
+                                <td>
+                                    <form th:id="'request_cancel_form' + ${request.id}" th:action="@{/friend_requests/} + ${request.id} + '/delete'" method="POST">
+                                        <button type="submit" class="btn btn-danger">Cancel</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </th:block>
+                    </table>
+                </div>
+            </div>
+
+            <!-- space divider -->
+            <br/>
+            <hr class="style1"/>
+            <br/>
+
+            <!-- table containing received friend requests -->
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="mt-5">Received Friend Requests</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Sender</th>
+                                <th>Receive Time</th>
+                                <th>Respond</th>
+                            </tr>
+                        </thead>
+                        <th:block th:each="request : ${received_requests}">
+                            <tr>
+                                <td><a th:href="@{'/accounts/' + ${request.sender.profilename}}" th:text="${request.sender.profilename}"></a></td>
+                                <td><span th:text="${#temporals.format(request.created, 'yyyy-MM-dd HH:mm')}"></span></td>
+                                <td>
+                                    <div role="group" class="btn-group">
+                                        <form th:id="'request_accept_form' + ${request.id}" th:action="@{/friend_requests/} + ${request.id} + '/accept'" method="POST">
+                                            <button type="submit" class="btn btn-primary">Accept</button>
+                                        </form>
+                                        <form th:id="'request_decline_form' + ${request.id}" th:action="@{/friend_requests/} + ${request.id} + '/delete'" method="POST">
+                                            <button type="submit" class="btn btn-danger">Decline</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </th:block>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- footer -->
+        <div th:replace="fragments/layout :: page_footer"></div>
+
+    </body>
+</html>

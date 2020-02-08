@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/layout :: head(title='Pictures')">
+        <meta charset="UTF-8" />
+        <title>SOMEHOME</title>
+    </head>
+    <body>
+
+        <!-- Page information -->
+        <div th:replace="fragments/layout :: page_information(text='Picture Management')"></div>
+
+        <!-- Navigation -->
+        <nav th:replace="fragments/layout :: navigation"></nav>
+
+        <!-- Page Content -->
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h1 class="mt-5">Add Picture to Album</h1>
+                </div>
+
+                <div class="col-3"></div>
+                <div class="col-lg-6 text-center">
+                    <form id="picture_add_form" th:action="@{/pictures}" method="POST" enctype="multipart/form-data">
+                        <!-- error message -->
+                        <div th:if="${errorMessage}">
+                            <p th:text="${errorMessage}" class="alert alert-danger"></p>
+                        </div>
+                        <div class="form-group">
+                            <label for="description_input">Description for your picture</label>
+                            <textarea maxlength="200" class="form-control" rows="5" name="description" id="description_input"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="file" id="picture_input" name="picture" class="form-control-file" accept="image/png, image/jpeg"></input>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Upload Picture</button>
+                    </form> 
+                </div>
+                <div class="col-3"></div>
+            </div>
+
+            <div class="row mt-5">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Picture</th>
+                            <th>Description</th>
+                            <th>Mediatype</th>
+                            <th>Size</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <th:block th:each="picture : ${pictures}">
+                        <tr>
+                            <td><span th:text="${picture.name}"></span></td>
+                            <td><span th:text="${picture.description}"></span></td>
+                            <td><span th:text="${picture.mediaType}"></span></td>
+                            <td><span th:text="${picture.size}"></span></td>
+                            <td>
+                                <form th:id="'picture_delete_form' + ${picture.id}" th:action="@{/pictures/} + ${picture.id} + '/delete'" method="POST">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </th:block>
+                </table>  
+            </div>
+
+        </div>
+
+        <!-- footer -->
+        <div th:replace="fragments/layout :: page_footer"></div>
+
+    </body>
+</html>

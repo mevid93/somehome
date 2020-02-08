@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/layout :: head(title='Home')">
+        <meta charset="UTF-8" />
+        <title>SOMEHOME</title>
+    </head>
+    <body>
+
+        <!-- Page information -->
+        <div th:replace="fragments/layout :: page_information(text=${account.profilename})"></div>
+
+        <!-- Navigation -->
+        <nav th:replace="fragments/layout :: navigation"></nav>
+
+        <!-- Page Content -->
+        <div class="container" style="margin-top:30px">
+            <div class="row">
+                <div class="col-sm-4">
+                    <!-- Profile name -->
+                    <h2 th:text="${account.profilename}"></h2>
+                    <!-- Profile picture -->
+                    <div th:replace="fragments/layout :: profilepicture(picture=${profile_picture})"></div>
+                    <!-- Profile description -->
+                    <div th:replace="fragments/layout :: profile_description(description=${account.description})"></div>
+
+                </div>
+                <div class="col-sm-8">
+                    
+                    <!-- New message input -->
+                    <div th:replace="fragments/layout :: wall_message_form(account=${account})"></div>
+
+                    <!-- Divide message input and message wall -->
+                    <hr/>
+                    
+                    <!-- Latest messages -->
+                    <th:block th:if="${messages} != null" th:each="message : ${messages}">
+                        <div th:replace="fragments/layout :: message_element(message=${message}, friend_status=2)"></div>
+                        <hr/>
+                    </th:block>
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- footer -->
+        <div th:replace="fragments/layout :: page_footer"></div>
+
+    </body>
+</html>
