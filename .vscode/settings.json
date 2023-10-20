@@ -1,0 +1,8 @@
+{
+    "java.compile.nullAnalysis.mode": "disabled",
+    "java.format.settings.profile": "GoogleStyle",
+    "java.checkstyle.configuration": "/google_checks.xml",
+    "editor.tabSize": 2,
+    "editor.detectIndentation": false,
+    "java.configuration.updateBuildConfiguration": "interactive",
+}

@@ -29,7 +29,7 @@
                 <div class="col-lg-6 text-center">
 
                     <!-- login --> 
-                    <form th:action="@{/register}" th:object="${account}" method="POST">
+                    <form id="register_form" th:action="@{/register}" th:object="${account}" method="POST">
                         <div class="form-group">
                             <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="alert alert-danger"></p>
                             <label for="username">Username</label>

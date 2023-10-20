@@ -29,7 +29,7 @@
                 <div class="col-lg-6 text-center">
 
                     <!-- login --> 
-                    <form th:action="@{/login}" method="POST">
+                    <form id="login_form" th:action="@{/login}" method="POST">
                         <!-- error message -->
                         <div th:if="${errorMessage}">
                             <p th:text="${errorMessage}" class="alert alert-danger"></p>
