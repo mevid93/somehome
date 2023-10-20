@@ -1,2 +1,4 @@
 # somehome
-Java Web programming course project
+Simple Java Spring Boot Web app.
+
+![screenshot](./doc/somehome.png)
