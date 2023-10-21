@@ -4,7 +4,7 @@ Simple Java Spring Boot web app.
 ![screenshot](./doc/somehome.png)
 
 
-## How to Build docker image
+## How to Build and run docker image
 Make sure Java 17, Maven, and docker are installed. Copy repository to your computer and run the following commands.
 
 ```console
